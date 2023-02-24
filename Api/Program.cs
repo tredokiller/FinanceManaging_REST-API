@@ -31,7 +31,7 @@ builder.Services.AddAuthentication(x =>
     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(o =>
 {
-    var key = Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]);
+    var key = Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!);
     o.SaveToken = true;
     o.TokenValidationParameters = new TokenValidationParameters
     {
@@ -42,8 +42,6 @@ builder.Services.AddAuthentication(x =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
-
-//builder.Services.AddSingleton<IJWT>()
 
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration).Enrich.FromLogContext()

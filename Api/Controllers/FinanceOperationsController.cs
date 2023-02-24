@@ -3,10 +3,12 @@ using Domain.Entities;
 using Infrastructure.Services;
 using Infrastructure.Services.Requests;
 using Infrastructure.Services.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class FinanceOperationsController : ControllerBase
