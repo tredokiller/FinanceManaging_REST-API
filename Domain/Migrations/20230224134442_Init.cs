@@ -14,19 +14,6 @@ namespace Domain.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "FinanceActivityTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FinanceActivityTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "IncomeExpenseTypes",
                 columns: table => new
                 {
@@ -38,6 +25,20 @@ namespace Domain.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IncomeExpenseTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,15 +65,6 @@ namespace Domain.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "FinanceActivityTypes",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1, "Income" },
-                    { 2, "Expense" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "IncomeExpenseTypes",
                 columns: new[] { "Id", "FinanceActivityType", "Name" },
                 values: new object[,]
@@ -82,6 +74,11 @@ namespace Domain.Migrations
                     { 3, 1, "Public Utilities" },
                     { 4, 1, "Online Subscriptions" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Name", "Password" },
+                values: new object[] { 1, "Troleibus", "Proizd15UAH" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_FinanceOperations_CategoryId",
@@ -93,10 +90,10 @@ namespace Domain.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FinanceActivityTypes");
+                name: "FinanceOperations");
 
             migrationBuilder.DropTable(
-                name: "FinanceOperations");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "IncomeExpenseTypes");
