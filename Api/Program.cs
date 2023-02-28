@@ -1,11 +1,14 @@
+using System.Reflection;
 using System.Text;
 using Api.Extensions;
 using Domain.Context;
+using Domain.Entities;
 using Domain.Repository;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +18,11 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration
     .GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("Domain")));
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+builder.Services.AddScoped<IRepository<FinanceOperation>, Repository<FinanceOperation>>();
+builder.Services.AddScoped<IRepository<IncomeExpenseCategory>, Repository<IncomeExpenseCategory>>();
+builder.Services.AddScoped<IRepository<User>, Repository<User>>();
 
 builder.Services.AddScoped<IIncomeExpenseService, IncomeExpenseService>();
 builder.Services.AddScoped<IFinanceOperationService, FinanceOperationService>();
@@ -50,13 +56,24 @@ builder.Logging.AddSerilog(logger);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    // Set up Swagger document info
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+    // Set the comments path for the Swagger JSON and UI.
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 
 app.UseSwagger();
-app.UseSwaggerUI();
-
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+});
 
 app.ConfigureExceptionHandler();
 
