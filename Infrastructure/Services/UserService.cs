@@ -3,7 +3,8 @@ using System.Security.Claims;
 using System.Text;
 using Domain.Entities;
 using Domain.Repository;
-using Infrastructure.Services.Requests;
+using Infrastructure.Models;
+using Infrastructure.Models.Requests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,7 +21,7 @@ public class UserService : IUserService
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
     
-    public async Task<UserToken> Authenticate(UserAuthenticateRequest userInputData)
+    public Task<UserToken> Authenticate(UserAuthenticateRequest userInputData)
     {
         if (userInputData == null)
         {
@@ -29,7 +30,7 @@ public class UserService : IUserService
         
         if (!_usersRepository.GetAll().Result.Any(user => user.Name == userInputData.Name && user.Password == userInputData.Password))
         {
-            return null;
+            return Task.FromResult<UserToken>(null);
         }
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenKey = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
@@ -43,6 +44,6 @@ public class UserService : IUserService
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey),SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return new UserToken { Token = tokenHandler.WriteToken(token) };
+        return Task.FromResult(new UserToken { Token = tokenHandler.WriteToken(token) });
     }
 }

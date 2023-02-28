@@ -1,5 +1,7 @@
 using Domain.Entities;
+using Domain.Entities.Enums;
 using Domain.Repository;
+using Infrastructure.Models;
 
 namespace Infrastructure.Services;
 
@@ -16,11 +18,6 @@ public class DateReportService : IDateReportService
 
     public Task<DateReport> GetDailyReport(DateTime date)
     {
-        if (date == null)
-        {
-            throw new ArgumentNullException(nameof(date));
-        }
-
         DateReport report = new DateReport();
         List<FinanceOperation> operationsList = new List<FinanceOperation>();
         
@@ -40,15 +37,6 @@ public class DateReportService : IDateReportService
 
     public Task<DateReport> GetDatePeriodReport(DateTime startDate, DateTime endDate)
     {
-        if (startDate == null)
-        {
-            throw new ArgumentNullException(nameof(startDate));
-        }
-        if (endDate == null)
-        {
-            throw new ArgumentNullException(nameof(endDate));
-        }
-        
         DateReport report = new DateReport();
         List<FinanceOperation> operationsList = new List<FinanceOperation>();
 

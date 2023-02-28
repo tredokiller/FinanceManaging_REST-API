@@ -1,7 +1,7 @@
 using AutoMapper;
 using Domain.Entities;
-using Infrastructure.Services.Requests;
-using Infrastructure.Services.Responses;
+using Infrastructure.Models.Requests;
+using Infrastructure.Models.Responses;
 
 namespace Infrastructure.MappingProfiles;
 

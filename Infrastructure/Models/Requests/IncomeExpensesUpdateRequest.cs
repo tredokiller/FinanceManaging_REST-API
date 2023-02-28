@@ -1,4 +1,4 @@
-namespace Infrastructure.Services.Requests;
+namespace Infrastructure.Models.Requests;
 
 public class IncomeExpensesUpdateRequest
 {

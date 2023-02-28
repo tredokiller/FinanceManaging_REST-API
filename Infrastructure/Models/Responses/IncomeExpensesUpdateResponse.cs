@@ -1,4 +1,4 @@
-namespace Infrastructure.Services.Responses;
+namespace Infrastructure.Models.Responses;
 
 public class IncomeExpensesUpdateResponse
 {

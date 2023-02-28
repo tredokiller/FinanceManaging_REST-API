@@ -1,5 +1,6 @@
 using Domain.Entities;
-using Infrastructure.Services.Requests;
+using Infrastructure.Models;
+using Infrastructure.Models.Requests;
 
 namespace Infrastructure.Services;
 

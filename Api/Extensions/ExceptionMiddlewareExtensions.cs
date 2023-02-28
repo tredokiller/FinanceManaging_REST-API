@@ -1,5 +1,6 @@
 using System.Net;
 using Domain.Entities;
+using Infrastructure.Models;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace Api.Extensions

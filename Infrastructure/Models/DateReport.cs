@@ -1,4 +1,6 @@
-namespace Domain.Entities;
+using Domain.Entities;
+
+namespace Infrastructure.Models;
 
 public class DateReport
 {
