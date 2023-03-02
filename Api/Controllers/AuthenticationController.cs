@@ -5,19 +5,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
-
 [Authorize]
 [Route("api/[controller]")]
-[ApiController]  
+[ApiController]
 public class AuthenticationController : ControllerBase
 {
     private readonly IUserService _userService;
-    
+
     public AuthenticationController(IUserService userService)
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
-    
+
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Data</response>
     [AllowAnonymous]
@@ -32,6 +31,7 @@ public class AuthenticationController : ControllerBase
         {
             throw new BadHttpRequestException(nameof(userData));
         }
+
         var token = _userService.Authenticate(userData);
 
         if (token.Result == null)
@@ -41,5 +41,4 @@ public class AuthenticationController : ControllerBase
 
         return Ok(token);
     }
-    
 }

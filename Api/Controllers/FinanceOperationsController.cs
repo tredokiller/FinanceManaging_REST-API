@@ -13,11 +13,10 @@ namespace Api.Controllers;
 public class FinanceOperationsController : ControllerBase
 {
     private readonly IFinanceOperationService _financeOperationsService;
-
-
-    public FinanceOperationsController(IFinanceOperationService incomeExpensesRepository)
+    
+    public FinanceOperationsController(IFinanceOperationService financeOperationsService)
     {
-        _financeOperationsService = incomeExpensesRepository ?? throw new ArgumentNullException(nameof(incomeExpensesRepository));
+        _financeOperationsService = financeOperationsService ?? throw new ArgumentNullException(nameof(financeOperationsService));
     }
 
     /// <response code="200">Successful Response</response>
@@ -42,7 +41,10 @@ public class FinanceOperationsController : ControllerBase
         {
             throw new BadHttpRequestException(nameof(id));
         }
-        return await _financeOperationsService.GetFinanceOperation(id);
+        
+        var result= _financeOperationsService.GetFinanceOperation(id);
+
+        return await result;
     }
 
     /// <response code="200">Successful Response</response>
@@ -72,6 +74,7 @@ public class FinanceOperationsController : ControllerBase
         {
             throw new BadHttpRequestException(nameof(id));
         }
+        
         _financeOperationsService.RemoveFinanceOperation(id);
     }
     
