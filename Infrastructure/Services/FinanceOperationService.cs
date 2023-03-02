@@ -1,6 +1,7 @@
 using AutoMapper;
 using Domain.Entities;
 using Domain.Repository;
+using Infrastructure.Models.Exceptions;
 using Infrastructure.Models.Requests;
 using Infrastructure.Models.Responses;
 
@@ -31,11 +32,26 @@ public class FinanceOperationService : IFinanceOperationService
 
     public async Task<FinanceOperation> GetFinanceOperation(int id)
     {
-        return await _financeOperationsRepository.Get(id);
+        if (id <= 0)
+        {
+            throw new BadRequestException(BadRequestException.WrongIdMessage);
+        }
+        var result = await _financeOperationsRepository.Get(id);
+
+        if (result == null)
+        {
+            throw new NotFoundException();
+        }
+
+        return result;
     }
 
     public async Task<FinanceOperationAddResponse> CreateFinanceOperation(FinanceOperationAddRequest type)
     {
+        if (type == null)
+        {
+            throw new BadRequestException();
+        }
         FinanceOperation entityType = _mapper.Map<FinanceOperationAddRequest, FinanceOperation>(type);
 
         entityType.CategoryType = _incomeExpensesRepository.Get(entityType.CategoryId).Result;
@@ -52,16 +68,26 @@ public class FinanceOperationService : IFinanceOperationService
     {
         if (id <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(id));
+            throw new BadRequestException(BadRequestException.WrongIdMessage);
         }
 
         var type = _financeOperationsRepository.Get(id);
+
+        if (type.Result == null)
+        {
+            throw new NotFoundException();
+        }
 
         _financeOperationsRepository.Remove(type.Result);
     }
 
     public async Task<FinanceOperationUpdateResponse> UpdateFinanceOperation(FinanceOperationUpdateRequest type)
     {
+        if (type == null)
+        {
+            throw new BadRequestException();
+        }
+        
         FinanceOperation entityType = _mapper.Map<FinanceOperationUpdateRequest, FinanceOperation>(type);
 
         FinanceOperationUpdateResponse response =
@@ -70,4 +96,6 @@ public class FinanceOperationService : IFinanceOperationService
 
         return response;
     }
+    
+    
 }

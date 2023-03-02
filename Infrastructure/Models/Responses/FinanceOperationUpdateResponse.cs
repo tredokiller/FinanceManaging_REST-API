@@ -7,5 +7,5 @@ public class FinanceOperationUpdateResponse
     public int Category { set; get; }
     public float Amount { set; get; }
     
-    public DateTime Data { set; get; }
+    public DateTime Date { set; get; }
 }
