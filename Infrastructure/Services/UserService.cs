@@ -4,6 +4,7 @@ using System.Text;
 using Domain.Entities;
 using Domain.Repository;
 using Infrastructure.Models;
+using Infrastructure.Models.Exceptions;
 using Infrastructure.Models.Requests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -25,7 +26,7 @@ public class UserService : IUserService
     {
         if (userInputData == null)
         {
-            throw new ArgumentNullException(nameof(userInputData));
+            throw new BadRequestException();
         }
         
         if (!_usersRepository.GetAll().Result.Any(user => user.Name == userInputData.Name && user.Password == userInputData.Password))
