@@ -1,5 +1,6 @@
 using Api.Controllers;
 using Infrastructure.Models;
+using Infrastructure.Models.Exceptions;
 using Infrastructure.Models.Requests;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +20,7 @@ public class AuthenticationControllerTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(BadHttpRequestException))]
+    [ExpectedException(typeof(BadRequestException))]
     public void AuthenticateThrowBadRequestExceptionTest()
     {
         var service = new Mock<IUserService>();

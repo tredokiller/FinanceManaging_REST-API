@@ -1,5 +1,6 @@
 using Api.Controllers;
 using Domain.Entities;
+using Infrastructure.Models.Exceptions;
 using Infrastructure.Models.Requests;
 using Infrastructure.Models.Responses;
 using Infrastructure.Services;
@@ -26,7 +27,7 @@ public class FinanceOperationsControllerTests
         var service = new Mock<IFinanceOperationService>();
         var controller = new FinanceOperationsController(service.Object);
 
-        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(() => controller.GetFinanceOperation(-1));
+        await Assert.ThrowsExceptionAsync<BadRequestException>(() => controller.GetFinanceOperation(-1));
     }
     
     [TestMethod]
@@ -49,7 +50,7 @@ public class FinanceOperationsControllerTests
         var service = new Mock<IFinanceOperationService>();
         var controller = new FinanceOperationsController(service.Object);
 
-        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(() => controller.CreateFinanceOperation(null));
+        await Assert.ThrowsExceptionAsync<BadRequestException>(() => controller.CreateFinanceOperation(null));
     }
     
     [TestMethod]
@@ -67,7 +68,7 @@ public class FinanceOperationsControllerTests
     
     
     [TestMethod]
-    [ExpectedException(typeof(BadHttpRequestException))]
+    [ExpectedException(typeof(BadRequestException))]
     public void  RemoveFinanceOperationBadRequestExceptionTest()
     {
         var service = new Mock<IFinanceOperationService>();
@@ -83,7 +84,7 @@ public class FinanceOperationsControllerTests
         var service = new Mock<IFinanceOperationService>();
         var controller = new FinanceOperationsController(service.Object);
         
-        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(() => controller.UpdateFinanceOperation(null));
+        await Assert.ThrowsExceptionAsync<BadRequestException>(() => controller.UpdateFinanceOperation(null));
     }
     
     

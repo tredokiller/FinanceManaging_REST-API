@@ -1,9 +1,9 @@
 using Api.Controllers;
 using Domain.Entities;
+using Infrastructure.Models.Exceptions;
 using Infrastructure.Models.Requests;
 using Infrastructure.Models.Responses;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -53,7 +53,7 @@ public class IncomeExpensesControllerTests
 
         var controller = new IncomeExpensesController(service.Object);
 
-        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(() => controller.GetIncomeExpense(-1));
+        await Assert.ThrowsExceptionAsync<BadRequestException>(() => controller.GetIncomeExpense(-1));
         
     }
     
@@ -78,14 +78,14 @@ public class IncomeExpensesControllerTests
 
         var controller = new IncomeExpensesController(service.Object);
 
-        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(() => controller.CreateIncomeExpenseType(null));
+        await Assert.ThrowsExceptionAsync<BadRequestException>(() => controller.CreateIncomeExpenseType(null));
     }
     
     
     
     
     [TestMethod]
-    [ExpectedException(typeof(BadHttpRequestException))]
+    [ExpectedException(typeof(BadRequestException))]
     public async Task RemoveIncomeExpenseTypeSuccessTest()
     {
         var service = new Mock<IIncomeExpenseService>();
@@ -118,6 +118,6 @@ public class IncomeExpensesControllerTests
 
         var controller = new IncomeExpensesController(service.Object);
 
-        await Assert.ThrowsExceptionAsync<BadHttpRequestException>(() => controller.UpdateIncomeExpenseType(null));
+        await Assert.ThrowsExceptionAsync<BadRequestException>(() => controller.UpdateIncomeExpenseType(null));
     }
 }
