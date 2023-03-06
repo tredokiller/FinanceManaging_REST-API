@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Infrastructure.Models.Exceptions;
 using Infrastructure.Models.Requests;
 using Infrastructure.Models.Responses;
 using Infrastructure.Services;
@@ -22,6 +23,12 @@ public class IncomeExpensesController : ControllerBase
     
     
     /// <response code="200">Successful Response</response>
+    /// <summary>
+    /// Get All IncomeExpense types
+    /// </summary>
+    /// <remarks>
+    /// Get all IncomeExpense types
+    /// </remarks>
     [HttpGet("GetAllIncomeExpenses")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -30,6 +37,13 @@ public class IncomeExpensesController : ControllerBase
         return _incomeExpensesService.GetIncomeExpenseTypes();
     }
     
+    
+    /// <summary>
+    /// Get IncomeExpense type
+    /// </summary>
+    /// <remarks>
+    /// Get one IncomeExpense type
+    /// </remarks>
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Response By Id</response>
     [HttpGet("GetIncomeExpense")]
@@ -40,11 +54,24 @@ public class IncomeExpensesController : ControllerBase
     {
         if (id <= 0)
         {
-            throw new BadHttpRequestException(nameof(id));
+            throw new BadRequestException(BadRequestException.WrongIdMessage);
         }
         return await _incomeExpensesService.GetIncomeExpenseType(id);
     }
     
+    /// <summary>
+    /// Create IncomeExpenses Type
+    /// </summary>
+    /// <remarks>
+    /// Creating incomeExpenses type
+    /// 
+    ///     Post /CreateIncomeExpenseType
+    ///     {
+    ///        "name": "Car",
+    ///        "financeActivityType" : 1
+    ///     }
+    /// 
+    /// </remarks>
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Request</response>
     [HttpPost("CreateIncomeExpenseType")]
@@ -55,11 +82,24 @@ public class IncomeExpensesController : ControllerBase
     {
         if (type == null)
         {
-            throw new BadHttpRequestException(nameof(type));
+            throw new BadRequestException();
         }
         return await _incomeExpensesService.CreateIncomeExpenseType(type);
     }
     
+    
+    /// <summary>
+    /// Remove IncomeExpenses Type
+    /// </summary>
+    /// <remarks>
+    /// Removing incomeExpenses type
+    /// 
+    ///     Post /RemoveIncomeExpenseType
+    ///     {
+    ///        "id": 1
+    ///     }
+    /// 
+    /// </remarks>
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Response By Id</response>
     [HttpPost("RemoveIncomeExpenseType")]
@@ -69,13 +109,27 @@ public class IncomeExpensesController : ControllerBase
     {
         if (id <= 0)
         {
-            throw new BadHttpRequestException(nameof(id));
+            throw new BadRequestException(BadRequestException.WrongIdMessage);
         }
         _incomeExpensesService.RemoveIncomeExpenseType(id);
     }
     
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Request</response>
+    /// <summary>
+    /// Update IncomeExpenses Type
+    /// </summary>
+    /// <remarks>
+    /// Updating incomeExpenses type
+    /// 
+    ///     Put /UpdateIncomeExpenseType
+    ///     {
+    ///        "id": 1,
+    ///        "name": "Deposit",
+    ///        "financeActivityType": 1,
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut("UpdateIncomeExpenseType")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -83,7 +137,7 @@ public class IncomeExpensesController : ControllerBase
     {
         if (type == null)
         {
-            throw new BadHttpRequestException(nameof(type));
+            throw new BadRequestException();
         }
         return await _incomeExpensesService.UpdateIncomeExpenseType(type);
     }

@@ -1,3 +1,4 @@
+using Infrastructure.Models.Exceptions;
 using Infrastructure.Models.Requests;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,19 @@ public class AuthenticationController : ControllerBase
 
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Data</response>
+    /// <summary>
+    /// User Authentication
+    /// </summary>
+    /// <remarks>
+    /// Authentication example
+    /// 
+    ///     POST /Authenticate
+    ///     {
+    ///        "name": "Slava",
+    ///        "password": "robot2344"
+    ///     }
+    ///     
+    /// </remarks>
     [AllowAnonymous]
     [HttpPost]
     [Route("Authenticate")]
@@ -29,7 +43,7 @@ public class AuthenticationController : ControllerBase
     {
         if (userData == null)
         {
-            throw new BadHttpRequestException(nameof(userData));
+            throw new BadRequestException();
         }
 
         var token = _userService.Authenticate(userData);

@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Infrastructure.Models.Exceptions;
 using Infrastructure.Models.Requests;
 using Infrastructure.Models.Responses;
 using Infrastructure.Services;
@@ -20,6 +21,12 @@ public class FinanceOperationsController : ControllerBase
     }
 
     /// <response code="200">Successful Response</response>
+    /// <summary>
+    /// Get All Finance Operations
+    /// </summary>
+    /// <remarks>
+    /// Multiple get all finance operations
+    /// </remarks>
     [HttpGet("GetAllFinanceOperations")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -31,6 +38,12 @@ public class FinanceOperationsController : ControllerBase
 
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Response By Id</response>
+    /// <summary>
+    /// Get one Finance Operation
+    /// </summary>
+    /// <remarks>
+    /// Get one finance operation
+    /// </remarks>
     [HttpGet("GetFinanceOperation")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -39,7 +52,7 @@ public class FinanceOperationsController : ControllerBase
     {
         if (id <= 0)
         {
-            throw new BadHttpRequestException(nameof(id));
+            throw new BadRequestException(BadRequestException.WrongIdMessage);
         }
         
         var result= _financeOperationsService.GetFinanceOperation(id);
@@ -49,6 +62,20 @@ public class FinanceOperationsController : ControllerBase
 
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Request</response>
+    /// <summary>
+    /// Create Finance Operation
+    /// </summary>
+    /// <remarks>
+    /// Creation of finance operation
+    /// 
+    ///     POST /CreateFinanceOperation
+    ///     {
+    ///        "categoryId": "1",
+    ///        "amount": "200",
+    ///        "date": "2023-03-03T19:52:24.225Z"
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPost("CreateFinanceOperation")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -57,13 +84,25 @@ public class FinanceOperationsController : ControllerBase
     {
         if (type == null)
         {
-            throw new BadHttpRequestException(nameof(type));
+            throw new BadRequestException();
         }
         return await _financeOperationsService.CreateFinanceOperation(type);
     }
 
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Response By Id</response>
+    /// <summary>
+    /// Remove Finance Operation
+    /// </summary>
+    /// <remarks>
+    /// Removing finance operation
+    /// 
+    ///     POST /RemoveFinanceOperation
+    ///      {
+    ///         "id": "1"
+    ///      }
+    /// 
+    /// </remarks>
     [HttpPost("RemoveFinanceOperation")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -72,7 +111,7 @@ public class FinanceOperationsController : ControllerBase
     {
         if (id <= 0)
         {
-            throw new BadHttpRequestException(nameof(id));
+            throw new BadRequestException(BadRequestException.WrongIdMessage);
         }
         
         _financeOperationsService.RemoveFinanceOperation(id);
@@ -80,6 +119,21 @@ public class FinanceOperationsController : ControllerBase
     
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Request</response>
+    /// <summary>
+    /// Update Finance Operation
+    /// </summary>
+    /// <remarks>
+    /// Updating finance operation
+    /// 
+    ///     Put /UpdateFinanceOperation
+    ///     {
+    ///        "id": 1,
+    ///        "category": 2,
+    ///        "amount": 200,
+    ///        "date": "2023-03-03T20:01:18.746Z"
+    ///     }
+    /// 
+    /// </remarks>
     [HttpPut("UpdateFinanceOperation")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -88,7 +142,7 @@ public class FinanceOperationsController : ControllerBase
     {
         if (type == null)
         {
-            throw new BadHttpRequestException(nameof(type));
+            throw new BadRequestException();
         }
         
         return await _financeOperationsService.UpdateFinanceOperation(type);

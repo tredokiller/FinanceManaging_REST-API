@@ -1,9 +1,10 @@
+using System.Net;
+
 namespace Infrastructure.Models.Exceptions;
 
-public class NotFoundException : Exception
+public class NotFoundException : CustomException
 {
-    public const string DataNotFoundMessage = "Data is not founded";
-    public int StatusCode { get; } = 404;
+    private const string DataNotFoundMessage = "Data is not founded";
 
-    public NotFoundException(string message = DataNotFoundMessage) : base(message) { }
+    public NotFoundException(string message = DataNotFoundMessage) : base(message , HttpStatusCode.NotFound) { }
 }

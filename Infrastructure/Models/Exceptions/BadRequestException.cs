@@ -1,11 +1,11 @@
+using System.Net;
+
 namespace Infrastructure.Models.Exceptions;
 
-public class BadRequestException : Exception
+public class BadRequestException : CustomException
 {
     public const string WrongIdMessage = "Invalid Id";
     public const string InvalidRequestMessage = "Invalid Data";
     
-    private int StatusCode { get; } = 400;
-
-    public BadRequestException(string message = InvalidRequestMessage) : base(message) { }
+    public BadRequestException(string message = InvalidRequestMessage) : base(message , HttpStatusCode.BadRequest) { }
 }
