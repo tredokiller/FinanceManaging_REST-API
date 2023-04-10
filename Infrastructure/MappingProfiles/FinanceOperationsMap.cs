@@ -10,7 +10,7 @@ public class FinanceOperationsMap : Profile
     public FinanceOperationsMap()
     {
         CreateMap<FinanceOperation, FinanceOperationAddResponse>();
-        CreateMap<IncomeExpenseCategory, FinanceOperationUpdateResponse>();
+        CreateMap<FinanceOperation, FinanceOperationUpdateResponse>();
         CreateMap<FinanceOperationAddRequest, FinanceOperation>();
         CreateMap<FinanceOperationUpdateRequest, FinanceOperation>();
     } 

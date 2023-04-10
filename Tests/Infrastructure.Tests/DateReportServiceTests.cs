@@ -105,7 +105,7 @@ public class DateReportServiceTests
             Operations = listOfOperations
         };
         
-        var result = service.GetDatePeriodReport(new DateTime(2020, 11, 12) , new DateTime(2020, 12, 13));
+        var result = service.GetPeriodOfDatesReport(new DateTime(2020, 11, 12) , new DateTime(2020, 12, 13));
 
         result.Result.Should().BeEquivalentTo(trueDateReport);
     }

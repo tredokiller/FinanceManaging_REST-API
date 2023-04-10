@@ -35,7 +35,7 @@ public class DateReportService : IDateReportService
         return Task.FromResult(report);
     }
 
-    public Task<DateReport> GetDatePeriodReport(DateTime startDate, DateTime endDate)
+    public Task<DateReport> GetPeriodOfDatesReport(DateTime startDate, DateTime endDate)
     {
         DateReport report = new DateReport();
         List<FinanceOperation> operationsList = new List<FinanceOperation>();

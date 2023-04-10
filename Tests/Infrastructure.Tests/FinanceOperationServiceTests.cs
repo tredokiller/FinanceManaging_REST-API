@@ -198,7 +198,7 @@ public class FinanceOperationServiceTests
         {
             Id = 1,
             Amount = 100,
-            Category = 2,
+            CategoryId = 2,
             Date = new DateTime(2022, 02, 01)
         };
 
@@ -234,7 +234,7 @@ public class FinanceOperationServiceTests
                 Id = 1,
                 Amount = 100,
                 Date = new DateTime(2022, 02, 01),
-                Category = 1,
+                CategoryId = 1,
                 
             });
 
@@ -251,7 +251,7 @@ public class FinanceOperationServiceTests
         Assert.IsInstanceOfType(result, typeof(FinanceOperationUpdateResponse));
         Assert.AreEqual(1, result.Id);
         Assert.AreEqual(100, result.Amount);
-        Assert.AreEqual(1, result.Category);
+        Assert.AreEqual(1, result.CategoryId);
         Assert.AreEqual(new DateTime(2022, 02, 01), result.Date);
     }
     

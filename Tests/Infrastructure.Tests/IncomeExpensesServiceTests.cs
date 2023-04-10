@@ -151,7 +151,7 @@ public class IncomeExpensesServiceTests
         
         var service = new IncomeExpenseService(repo.Object, mapper.Object);
 
-        Assert.ThrowsException<BadRequestException>(() => service.RemoveIncomeExpenseType(-1));
+        Assert.ThrowsExceptionAsync<BadRequestException>(() => service.RemoveIncomeExpenseType(-1));
     }
     
     
@@ -167,7 +167,7 @@ public class IncomeExpensesServiceTests
 
         var service = new IncomeExpenseService(repo.Object, mapper.Object);
         
-        Assert.ThrowsException<NotFoundException>(() => service.RemoveIncomeExpenseType(100));
+        Assert.ThrowsExceptionAsync<NotFoundException>(() => service.RemoveIncomeExpenseType(100));
     }
 
 

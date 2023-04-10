@@ -64,7 +64,7 @@ public class FinanceOperationService : IFinanceOperationService
         return response;
     }
 
-    public void RemoveFinanceOperation(int id)
+    public async Task RemoveFinanceOperation(int id)
     {
         if (id <= 0)
         {
@@ -78,7 +78,7 @@ public class FinanceOperationService : IFinanceOperationService
             throw new NotFoundException();
         }
 
-        _financeOperationsRepository.Remove(type.Result);
+        await _financeOperationsRepository.Remove(type.Result);
     }
 
     public async Task<FinanceOperationUpdateResponse> UpdateFinanceOperation(FinanceOperationUpdateRequest type)
@@ -89,10 +89,14 @@ public class FinanceOperationService : IFinanceOperationService
         }
         
         FinanceOperation entityType = _mapper.Map<FinanceOperationUpdateRequest, FinanceOperation>(type);
+        
+        entityType.CategoryType = _incomeExpensesRepository.Get(entityType.CategoryId).Result;
+        entityType.Category = entityType.CategoryType.Name;
+        entityType.Type = entityType.CategoryType.FinanceActivityType.ToString();
 
         FinanceOperationUpdateResponse response =
             _mapper.Map<FinanceOperation, FinanceOperationUpdateResponse>(
-                await _financeOperationsRepository.Update(entityType));
+                _financeOperationsRepository.Update(entityType).Result);
 
         return response;
     }

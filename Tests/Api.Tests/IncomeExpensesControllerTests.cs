@@ -92,7 +92,7 @@ public class IncomeExpensesControllerTests
         
         var controller = new IncomeExpensesController(service.Object);
 
-        controller.RemoveIncomeExpenseType(-1);
+        await controller.RemoveIncomeExpenseType(-1);
     }
     
     

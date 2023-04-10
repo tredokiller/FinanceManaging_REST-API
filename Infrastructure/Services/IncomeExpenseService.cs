@@ -52,7 +52,7 @@ public class IncomeExpenseService : IIncomeExpenseService
         return response;
     }
 
-    public void RemoveIncomeExpenseType(int id)
+    public async Task RemoveIncomeExpenseType(int id)
     {
         if (id <= 0)
         {
@@ -66,7 +66,7 @@ public class IncomeExpenseService : IIncomeExpenseService
             throw new NotFoundException();
         }
 
-        _incomeExpensesRepository.Remove(type.Result);
+        await _incomeExpensesRepository.Remove(type.Result);
     }
 
     public async Task<IncomeExpensesUpdateResponse> UpdateIncomeExpenseType(IncomeExpensesUpdateRequest request)
@@ -75,11 +75,11 @@ public class IncomeExpenseService : IIncomeExpenseService
         {
             throw new BadRequestException();
         }
-        
+
         IncomeExpenseCategory entityCategory = _mapper.Map<IncomeExpensesUpdateRequest, IncomeExpenseCategory>(request);
         
         IncomeExpensesUpdateResponse response = _mapper.Map<IncomeExpenseCategory , IncomeExpensesUpdateResponse>(await _incomeExpensesRepository.Update(entityCategory));
-
+        
         return response;
     }
 }

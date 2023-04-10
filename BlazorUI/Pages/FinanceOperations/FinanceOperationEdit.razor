@@ -1,0 +1,78 @@
+@page "/finance-operations/edit/{id}"
+@using Infrastructure.Models.Requests
+@using Microsoft.AspNetCore.Components
+@using Domain.Entities
+
+@inherits FinanceOperationsBase
+
+
+<h3>Create New Finance Operation</h3>
+
+
+<EditForm Model="@_financeOperationUpdateRequest" OnValidSubmit="@Update">
+    <DataAnnotationsValidator/>
+     <div class="form-group">
+         <label for="amount">Id:</label>
+         <InputNumber class="form-control" id="amount" disabled="true" @bind-Value="@_financeOperationUpdateRequest.Id"/>
+         <ValidationMessage For="@(() => _financeOperationUpdateRequest.Id)"/>
+         </div>
+    <div class="form-group">
+        <label for="date">Category:</label>
+        <InputSelect class="form-control" id="id" @bind-Value="_financeOperationUpdateRequest.CategoryId">
+            <option value="">Select...</option>
+            @foreach (var item in _incomeExpenseCategories)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => _financeOperationUpdateRequest.CategoryId)"/>
+    </div>
+    <div class="form-group">
+        <label for="amount">Amount:</label>
+        <InputNumber class="form-control" id="amount" @bind-Value="@_financeOperationUpdateRequest.Amount"/>
+        <ValidationMessage For="@(() => _financeOperationUpdateRequest.Amount)"/>
+    </div>
+    <div class="form-group">
+        <label for="date">Date:</label>
+        <InputDate class="form-control" id="date" @bind-Value="@_financeOperationUpdateRequest.Date"></InputDate>
+        <ValidationMessage For="@(() => _financeOperationUpdateRequest.Date)"/>
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">Create New Finance Operation</button>
+    <button type="button" class="btn btn-primary" style="margin-top: 20px" @onclick="ToOperations">To Operations</button>
+</EditForm>
+
+
+@code {
+
+    [Parameter] 
+    public string Id { set; get; }
+    private int _intId;
+
+    private FinanceOperationUpdateRequest _financeOperationUpdateRequest = new FinanceOperationUpdateRequest();
+    private FinanceOperation _financeOperation;
+    
+    private IEnumerable<IncomeExpenseCategory> _incomeExpenseCategories = new List<IncomeExpenseCategory>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (int.TryParse(Id, out _intId))
+        {
+            _incomeExpenseCategories = await IncomeExpenseService.GetIncomeExpenseTypes();
+            _financeOperation = await FinanceOperationsService.GetFinanceOperation(_intId);
+
+            _financeOperationUpdateRequest.Amount = _financeOperation.Amount;
+            _financeOperationUpdateRequest.Date = _financeOperation.Date;
+            _financeOperationUpdateRequest.CategoryId = _financeOperation.CategoryId;
+            _financeOperationUpdateRequest.Id = _financeOperation.Id;
+        }
+    }
+
+
+    private async Task Update()
+    {
+        await FinanceOperationsService.UpdateFinanceOperation(_financeOperationUpdateRequest);
+        ToOperations();
+    }
+
+}

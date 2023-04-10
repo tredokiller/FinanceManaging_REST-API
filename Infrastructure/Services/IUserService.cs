@@ -1,4 +1,3 @@
-using Domain.Entities;
 using Infrastructure.Models;
 using Infrastructure.Models.Requests;
 

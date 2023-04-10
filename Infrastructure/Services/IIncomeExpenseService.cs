@@ -13,7 +13,7 @@ public interface IIncomeExpenseService
 
     Task<IncomeExpensesAddResponse> CreateIncomeExpenseType(IncomeExpensesAddRequest type);
 
-    void RemoveIncomeExpenseType(int id);
+    Task RemoveIncomeExpenseType(int id);
 
     Task<IncomeExpensesUpdateResponse> UpdateIncomeExpenseType(IncomeExpensesUpdateRequest type);
 }

@@ -1,0 +1,48 @@
+@page "/login"
+@using Infrastructure.Models.Requests
+@inherits LoginBase
+<h3 style="horiz-align: center">Login</h3>
+
+
+<EditForm Model="@UserDataRequest"  OnValidSubmit="@TryToLogin">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label for="userNameInput">Username:</label>
+        <InputText class="form-control" id="userNameInput" @bind-Value="@UserDataRequest.Name" />
+        <ValidationMessage For="@(() => UserDataRequest.Name)" />
+    </div>
+    <div class="form-group">
+        <label for="passwordInput">Password:</label>
+        <InputText class="form-control" id="passwordInput" @bind-Value="@UserDataRequest.Password" />
+        <ValidationMessage For="@(() => UserDataRequest.Password)" />
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">Login</button>
+</EditForm>
+
+<div style="margin-top: 15px; color: red">
+        @Message
+    </div>
+
+
+
+@code {
+    private UserAuthenticateRequest UserDataRequest { set; get; } = new UserAuthenticateRequest();
+
+    private string Message { set; get; } =  "";
+
+
+        private const string InvalidNameOrPassMessage = "Invalid password or username";
+
+    private async Task TryToLogin()
+    {
+        try
+        {
+            var userToken = await UserService.Authenticate(UserDataRequest);
+        }
+        catch (Exception e)
+        {
+            Message = InvalidNameOrPassMessage;
+        }
+        
+    }
+}

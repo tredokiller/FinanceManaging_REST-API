@@ -1,0 +1,44 @@
+@page "/income-expense-categories/new"
+@using Infrastructure.Models.Requests
+@using Microsoft.AspNetCore.Components
+@using Domain.Entities.Enums
+@inherits IncomeExpensesBase
+
+<h3>Create New Income/Expense Type</h3>
+
+
+
+<EditForm Model="@IncomeExpenseCategory"  OnValidSubmit="@Create">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+          <label for="nameInput">Name:</label>
+          <InputText class="form-control" id="nameInput" @bind-Value="@IncomeExpenseCategory.Name" />
+          <ValidationMessage For="@(() => IncomeExpenseCategory.Name)" />
+      </div>
+    <div class="form-group">
+        <label for="typeInput">Type:</label>
+        <select class="form-control" id="typeInput" @bind="@IncomeExpenseCategory.FinanceActivityType">
+            @foreach (var type in Enum.GetNames(typeof(FinanceActivityEnum)))
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => IncomeExpenseCategory.FinanceActivityType)" />
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">Create New Category</button>
+    <button type="button" class="btn btn-primary" style="margin-top: 20px" @onclick="ToCategories">To Categories</button>
+</EditForm>
+
+
+
+@code {
+    
+    private IncomeExpensesAddRequest IncomeExpenseCategory { get; set; } = new IncomeExpensesAddRequest();
+    
+    private async Task Create()
+    {
+        await IncomeExpenseService.CreateIncomeExpenseType(IncomeExpenseCategory);
+        ToCategories();
+    }
+
+}

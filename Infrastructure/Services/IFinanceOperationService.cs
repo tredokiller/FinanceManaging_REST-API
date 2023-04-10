@@ -12,7 +12,9 @@ public interface IFinanceOperationService
 
     Task<FinanceOperationAddResponse> CreateFinanceOperation(FinanceOperationAddRequest type);
 
-    void RemoveFinanceOperation(int id);
+    Task RemoveFinanceOperation(int id);
 
     Task<FinanceOperationUpdateResponse> UpdateFinanceOperation(FinanceOperationUpdateRequest type);
+    
+    
 }

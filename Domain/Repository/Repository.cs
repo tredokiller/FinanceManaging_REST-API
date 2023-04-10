@@ -42,7 +42,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
   
     
-    public void Remove(T entity)
+    public Task Remove(T entity)
     {
         if (entity == null)
         {
@@ -51,6 +51,8 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
         _entities.Remove(entity);
         _context.SaveChanges();
+
+        return Task.FromResult(entity);
     }
 
     public Task<T> Create(T entity)

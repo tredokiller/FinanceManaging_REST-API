@@ -36,7 +36,7 @@ public class DateReportControllerTests
     {
         var service = new Mock<IDateReportService>();
 
-        service.Setup((reportService => reportService.GetDatePeriodReport(new DateTime() , new DateTime()))).ReturnsAsync(new DateReport());
+        service.Setup((reportService => reportService.GetPeriodOfDatesReport(new DateTime() , new DateTime()))).ReturnsAsync(new DateReport());
         var controller = new DateReportController(service.Object);
 
         var result = controller.GetDailyReport(new DateTime());

@@ -10,8 +10,8 @@ public class IncomeExpensesMap : Profile
     public IncomeExpensesMap()
     {
         CreateMap<IncomeExpenseCategory, IncomeExpensesAddResponse>();
-        CreateMap<IncomeExpenseCategory, IncomeExpensesUpdateResponse>();
         CreateMap<IncomeExpensesAddRequest, IncomeExpenseCategory>();
         CreateMap<IncomeExpensesUpdateRequest, IncomeExpenseCategory>();
+        CreateMap<IncomeExpenseCategory, IncomeExpensesUpdateResponse>(); 
     }
 }

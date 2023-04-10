@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration
     .GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("Domain")));
 
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IRepository<FinanceOperation>, Repository<FinanceOperation>>();
 builder.Services.AddScoped<IRepository<IncomeExpenseCategory>, Repository<IncomeExpenseCategory>>();
@@ -103,7 +103,7 @@ app.UseSwaggerUI(c =>
 app.ConfigureExceptionHandler();
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 

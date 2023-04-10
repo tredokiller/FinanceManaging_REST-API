@@ -1,0 +1,58 @@
+@page "/date-report/{date}"
+@using Infrastructure.Models
+@inherits DateReportBase
+
+
+
+<h2>Daily Report For @Date</h2>
+
+@if (_report != null)
+{
+    <label for="Income">Total Income: @_report.TotalIncome</label>
+    <label for="Expense">Total Expense: @_report.TotalExpense</label>
+    <table class="table table-bordered table-striped" style="width: 100%">
+        <thead>
+        <tr>
+            <th size="15%">Id</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var operation in _report.Operations)
+        {
+            <tr>
+                <td>@operation.Id</td>
+                <td>@operation.Date</td>
+                <td>@operation.Type</td>
+                <td>@operation.Category</td>
+                <td>@operation.Amount</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" style="margin-top: 20px" @onclick="ToDateReportMain">To DataReport Main</button>
+    
+}
+else
+{
+    <p>Nothing happened today.</p>
+}
+
+@code
+{
+    [Parameter] 
+    public string Date { set; get; }
+
+    private DateReport _report;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _report = await DateReportService.GetDailyReport(FirstDate);
+    }
+}
+
+

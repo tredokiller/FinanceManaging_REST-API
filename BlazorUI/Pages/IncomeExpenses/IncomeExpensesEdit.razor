@@ -1,0 +1,71 @@
+@page "/income-expense-categories/edit/{id}"
+@using Microsoft.AspNetCore.Components
+@using Domain.Entities.Enums
+@using Domain.Entities
+@using Infrastructure.Models.Requests
+@inherits IncomeExpensesBase
+
+<h3>Edit Income/Expense Type</h3>
+
+
+
+<EditForm Model="@IncomeExpenseUpdateRequest"  OnValidSubmit="@Update">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label for="nameInput">Id:</label>
+        <InputNumber class="form-control" id="nameInput" disabled="true" @bind-Value="@IncomeExpenseUpdateRequest.Id" />
+    </div>
+    <div class="form-group">
+          <label for="nameInput">Name:</label>
+          <InputText class="form-control" id="nameInput" @bind-Value="@IncomeExpenseUpdateRequest.Name" />
+    </div>
+    <div class="form-group">
+        <label for="typeInput">Type:</label>
+        <select class="form-control"  id="typeInput"  @bind="@IncomeExpenseUpdateRequest.FinanceActivityType">
+            @foreach (var type in Enum.GetNames(typeof(FinanceActivityEnum)))
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => IncomeExpenseUpdateRequest.FinanceActivityType)" />
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">Update</button>
+    <button type="button" class="btn btn-primary" style="margin-top: 20px" @onclick="ToCategories">To Categories</button>
+</EditForm>
+
+
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+    
+    private int _intId;
+
+
+    private IncomeExpensesUpdateRequest IncomeExpenseUpdateRequest { get; set; } = new IncomeExpensesUpdateRequest();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (int.TryParse(Id, out _intId))
+        {
+            var incomeExpenseCategory = await IncomeExpenseService.GetIncomeExpenseType(_intId);
+
+            IncomeExpenseUpdateRequest.Name = incomeExpenseCategory.Name;
+            IncomeExpenseUpdateRequest.Id = incomeExpenseCategory.Id;
+            IncomeExpenseUpdateRequest.FinanceActivityType = incomeExpenseCategory.FinanceActivityType;
+
+
+        }
+    }
+
+    private async Task Update()
+    {
+        await IncomeExpenseService.UpdateIncomeExpenseType(IncomeExpenseUpdateRequest);
+        ToCategories();
+    }
+    
+    
+    
+
+}

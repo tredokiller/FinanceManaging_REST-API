@@ -62,6 +62,6 @@ public class DateReportController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public Task<DateReport> GetDatePeriodReport(DateTime startDate, DateTime endDate)
     {
-        return _dateReportService.GetDatePeriodReport(startDate , endDate);
+        return _dateReportService.GetPeriodOfDatesReport(startDate , endDate);
     }
 }

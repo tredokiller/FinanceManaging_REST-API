@@ -1,0 +1,39 @@
+@page "/income-expense-categories"
+
+@inherits IncomeExpensesBase
+<h3>Income/Expense Categories</h3>
+
+<button  style="margin-bottom: 20px;"   class="btn btn-primary" @onclick="@(() => CreateNewCategory())">Create New Category</button>
+
+@if (IncomeExpenseCategories != null && IncomeExpenseCategories.Any())
+{
+    <table class="table table-bordered table-striped" style="width: 100%">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th size="15%">Id</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var category in IncomeExpenseCategories)
+        {
+            <tr>
+                <td>@category.Name</td>
+                <td>@category.FinanceActivityType</td>
+                <td>@category.Id</td>
+                <td><button class="btn btn-warning" @onclick="@(() => EditCategory(category))">Edit</button></td>
+                <td><button class="btn btn-sm btn-danger" @onclick="@(() => DeleteCategory(category))">Delete</button></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+}
+else
+{
+    <p>No categories found.</p>
+}
+

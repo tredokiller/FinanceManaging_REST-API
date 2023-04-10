@@ -1,0 +1,43 @@
+@page "/finance-operations"
+@attribute [Authorize]
+@inherits FinanceOperationsBase
+
+<h3>Finance Operations</h3>
+
+
+<button  style="margin-bottom: 20px;"   class="btn btn-primary" @onclick="@(() => CreateNewFinanceOperation())">Create New Finance Operation</button>
+
+@if (FinanceOperations != null && FinanceOperations.Any())
+{
+    <table class="table table-bordered table-striped" style="width: 100%">
+        <thead>
+        <tr>
+            <th size="15%">Id</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var operation in FinanceOperations)
+        {
+            <tr>
+                <td>@operation.Id</td>
+                <td>@operation.Date</td>
+                <td>@operation.Type</td>
+                <td>@operation.Category</td>
+                <td>@operation.Amount</td>
+                <td><button class="btn btn-warning" @onclick="@(() => EditOperation(operation))">Edit</button></td>
+                <td><button class="btn btn-sm btn-danger" @onclick="@(() => DeleteOperation(operation))">Delete</button></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+}
+else
+{
+    <p>No operations found.</p>
+}
+

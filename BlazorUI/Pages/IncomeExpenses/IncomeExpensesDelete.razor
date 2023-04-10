@@ -1,0 +1,63 @@
+@page "/income-expense-categories/delete/{id}"
+@using Microsoft.AspNetCore.Components
+@using Domain.Entities.Enums
+@using Domain.Entities
+@inherits IncomeExpensesBase
+
+<h3>Delete Income/Expense Type</h3>
+
+
+
+<EditForm Model="@IncomeExpenseCategory"  OnValidSubmit="@Delete">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label for="nameInput">Id:</label>
+        <InputNumber class="form-control" id="nameInput" disabled="true" @bind-Value="@IncomeExpenseCategory.Id" />
+    </div>
+    <div class="form-group">
+          <label for="nameInput">Name:</label>
+          <InputText class="form-control" id="nameInput" disabled="true" @bind-Value="@IncomeExpenseCategory.Name" />
+    </div>
+    <div class="form-group">
+        <label for="typeInput">Type:</label>
+        <select class="form-control" disabled = "true"  id="typeInput"  @bind="@IncomeExpenseCategory.FinanceActivityType">
+            @foreach (var type in Enum.GetNames(typeof(FinanceActivityEnum)))
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => IncomeExpenseCategory.FinanceActivityType)" />
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 20px">Delete Type</button>
+    <button type="button" class="btn btn-primary" style="margin-top: 20px" @onclick="ToCategories">To Categories</button>
+</EditForm>
+
+
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    private int _intId;
+
+
+    private IncomeExpenseCategory IncomeExpenseCategory { get; set; } = new IncomeExpenseCategory();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (int.TryParse(Id, out _intId))
+        {
+            IncomeExpenseCategory = await IncomeExpenseService.GetIncomeExpenseType(_intId);
+        }
+    }
+
+    private async Task Delete()
+    {
+        await IncomeExpenseService.RemoveIncomeExpenseType(_intId);
+        ToCategories();
+    }
+    
+    
+
+}

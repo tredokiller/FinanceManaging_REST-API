@@ -103,7 +103,7 @@ public class FinanceOperationsController : ControllerBase
     ///      }
     /// 
     /// </remarks>
-    [HttpPost("RemoveFinanceOperation")]
+    [HttpDelete("RemoveFinanceOperation")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

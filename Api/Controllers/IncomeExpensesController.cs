@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class IncomeExpensesController : ControllerBase
@@ -102,16 +102,16 @@ public class IncomeExpensesController : ControllerBase
     /// </remarks>
     /// <response code="200">Successful Response</response>
     /// <response code="400">Invalid Response By Id</response>
-    [HttpPost("RemoveIncomeExpenseType")]
+    [HttpDelete("RemoveIncomeExpenseType")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public void RemoveIncomeExpenseType(int id)
+    public async Task RemoveIncomeExpenseType(int id)
     {
         if (id <= 0)
         {
             throw new BadRequestException(BadRequestException.WrongIdMessage);
         }
-        _incomeExpensesService.RemoveIncomeExpenseType(id);
+        await _incomeExpensesService.RemoveIncomeExpenseType(id);
     }
     
     /// <response code="200">Successful Response</response>
