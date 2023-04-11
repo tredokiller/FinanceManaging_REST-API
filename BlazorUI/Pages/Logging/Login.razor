@@ -16,17 +16,17 @@
         <InputText class="form-control" id="passwordInput" @bind-Value="@UserDataRequest.Password" />
         <ValidationMessage For="@(() => UserDataRequest.Password)" />
     </div>
+    <div style="margin-top: 15px; color: red">
+            @Message
+        </div>
     <button type="submit" class="btn btn-primary" style="margin-top: 20px">Login</button>
 </EditForm>
 
-<div style="margin-top: 15px; color: red">
-        @Message
-    </div>
 
 
 
 @code {
-    private UserAuthenticateRequest UserDataRequest { set; get; } = new UserAuthenticateRequest();
+    private UserAuthenticateRequest UserDataRequest { get; } = new UserAuthenticateRequest();
 
     private string Message { set; get; } =  "";
 
@@ -38,6 +38,9 @@
         try
         {
             var userToken = await UserService.Authenticate(UserDataRequest);
+            await LocalStorageService.SetItemAsync("token", userToken.Token);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+            NavigationManager.NavigateTo("");
         }
         catch (Exception e)
         {

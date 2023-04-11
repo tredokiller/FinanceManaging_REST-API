@@ -1,5 +1,7 @@
+using Blazored.LocalStorage;
 using BlazorUI.Services;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 using DateReportService = BlazorUI.Services.DateReportService;
 using FinanceOperationService = BlazorUI.Services.FinanceOperationService;
 using UserService = BlazorUI.Services.UserService;
@@ -18,6 +20,10 @@ builder.Services.AddScoped<IFinanceOperationService, FinanceOperationService>();
 builder.Services.AddScoped<IIncomeExpenseService, IncomeExpensesService>();
 builder.Services.AddScoped<IDateReportService, DateReportService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+
+builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddAuthorizationCore();
 
