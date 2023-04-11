@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class IncomeExpensesController : ControllerBase
@@ -20,7 +20,6 @@ public class IncomeExpensesController : ControllerBase
     {
         _incomeExpensesService = incomeExpensesRepository ?? throw new ArgumentNullException(nameof(incomeExpensesRepository));
     }
-    
     
     /// <response code="200">Successful Response</response>
     /// <summary>

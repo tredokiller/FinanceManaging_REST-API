@@ -81,7 +81,7 @@ public class FinanceOperationService : IFinanceOperationService
         await _financeOperationsRepository.Remove(type.Result);
     }
 
-    public async Task<FinanceOperationUpdateResponse> UpdateFinanceOperation(FinanceOperationUpdateRequest type)
+    public Task<FinanceOperationUpdateResponse> UpdateFinanceOperation(FinanceOperationUpdateRequest type)
     {
         if (type == null)
         {
@@ -98,7 +98,7 @@ public class FinanceOperationService : IFinanceOperationService
             _mapper.Map<FinanceOperation, FinanceOperationUpdateResponse>(
                 _financeOperationsRepository.Update(entityType).Result);
 
-        return response;
+        return Task.FromResult(response);
     }
     
     

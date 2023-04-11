@@ -1,8 +1,11 @@
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorUI.Pages.Reports;
 
+
+[Authorize]
 public class DateReportBase: ComponentBase
 {
     [Inject] 

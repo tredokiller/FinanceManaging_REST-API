@@ -1,9 +1,11 @@
 using Domain.Entities;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorUI.Pages.FinanceOperations;
 
+[Authorize]
 public class FinanceOperationsBase : ComponentBase
 {
     [Inject]
