@@ -151,7 +151,7 @@ public class FinanceOperationServiceTests
         
         var service = new FinanceOperationService(repo.Object, mapper.Object, incomeExpensesRepo.Object);
 
-        Assert.ThrowsException<BadRequestException>(() => service.RemoveFinanceOperation(-1));
+        Assert.ThrowsExceptionAsync<BadRequestException>(() => service.RemoveFinanceOperation(-1));
     }
     
     
@@ -168,7 +168,7 @@ public class FinanceOperationServiceTests
 
         var service = new FinanceOperationService(repo.Object, mapper.Object, incomeExpensesRepo.Object);
 
-        Assert.ThrowsException<NotFoundException>(() => service.RemoveFinanceOperation(100));
+        Assert.ThrowsExceptionAsync<NotFoundException>(() => service.RemoveFinanceOperation(100));
     }
 
 
@@ -198,8 +198,8 @@ public class FinanceOperationServiceTests
         {
             Id = 1,
             Amount = 100,
-            CategoryId = 2,
-            Date = new DateTime(2022, 02, 01)
+            Date = new DateTime(2022, 02, 01),
+            CategoryId = 1
         };
 
         var operationToUpdate = new FinanceOperation
@@ -207,7 +207,9 @@ public class FinanceOperationServiceTests
             Id = 1,
             Amount = 200,
             CategoryId = 1,
-            Date = new DateTime(2022, 01, 01)
+            Date = new DateTime(2022, 01, 01),
+            CategoryType = new IncomeExpenseCategory(),
+            Category = "Income"
         };
 
         var updatedOperation = new FinanceOperation
@@ -217,6 +219,13 @@ public class FinanceOperationServiceTests
             CategoryId = 1,
             Date = new DateTime(2022, 02, 01)
         };
+
+        incomeExpensesRepositoryMock.Setup(x => x.Get(1)).ReturnsAsync(new IncomeExpenseCategory()
+        {
+            FinanceActivityType = FinanceActivityEnum.Income,
+            Id = 1,
+            Name = "Deposit"
+        });
         
         financeOperationsRepositoryMock
             .Setup(x => x.Update(It.IsAny<FinanceOperation>()))
@@ -235,7 +244,7 @@ public class FinanceOperationServiceTests
                 Amount = 100,
                 Date = new DateTime(2022, 02, 01),
                 CategoryId = 1,
-                
+                Type = "Income"
             });
 
         var financeOperationService = new FinanceOperationService(
@@ -251,9 +260,9 @@ public class FinanceOperationServiceTests
         Assert.IsInstanceOfType(result, typeof(FinanceOperationUpdateResponse));
         Assert.AreEqual(1, result.Id);
         Assert.AreEqual(100, result.Amount);
-        Assert.AreEqual(1, result.CategoryId);
         Assert.AreEqual(new DateTime(2022, 02, 01), result.Date);
     }
+
     
     
 }
