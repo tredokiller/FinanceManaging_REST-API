@@ -1,18 +1,18 @@
 using System.Text.Json;
+using BlazorUI.Services.Interfaces;
 using Infrastructure.Models;
 using Infrastructure.Models.Requests;
 using Infrastructure.Services;
 using Newtonsoft.Json;
-using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace BlazorUI.Services;
 
 public class UserService : IUserService
 {
 
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientHandler _httpClient;
 
-    public UserService(HttpClient client)
+    public UserService(IHttpClientHandler client)
     {
         _httpClient = client ?? throw new ArgumentNullException(nameof(client));
     }
@@ -20,10 +20,7 @@ public class UserService : IUserService
     {
         var response = await _httpClient.PostAsJsonAsync($"api/Authentication/Authenticate" , userInputData);
         response.EnsureSuccessStatusCode();
-
-        //Console.WriteLine(response.Content.ReadAsStringAsync());
-        //UserToken userToken = await response.Content.ReadFromJsonAsync<UserToken>();
-
+        
         await using var stream = await response.Content.ReadAsStreamAsync();
         var jsonDoc = await JsonDocument.ParseAsync(stream);
         var resultProperty = jsonDoc.RootElement.GetProperty("result");

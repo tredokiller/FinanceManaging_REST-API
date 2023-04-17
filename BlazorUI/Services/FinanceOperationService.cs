@@ -1,3 +1,4 @@
+using BlazorUI.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Models.Requests;
 using Infrastructure.Models.Responses;
@@ -8,9 +9,9 @@ namespace BlazorUI.Services;
 
 public class FinanceOperationService : IFinanceOperationService
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientHandler _httpClient;
     
-    public FinanceOperationService(HttpClient httpClient)
+    public FinanceOperationService(IHttpClientHandler httpClient)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
     }
@@ -24,12 +25,12 @@ public class FinanceOperationService : IFinanceOperationService
     {
         var response = await _httpClient.GetAsync($"api/FinanceOperations/GetFinanceOperation?id={id}");
         response.EnsureSuccessStatusCode();
-        return (await response.Content.ReadFromJsonAsync<FinanceOperation>())!;
+        return await response.Content.ReadFromJsonAsync<FinanceOperation>();
     }
 
     public async Task<FinanceOperationAddResponse> CreateFinanceOperation(FinanceOperationAddRequest type)
     {
-        var response = await _httpClient.PostAsJsonAsync($"api/FinanceOperations/CreateFinanceOperation" , type);
+        var response = await _httpClient.PostAsJsonAsync($"api/FinanceOperations/CreateFinanceOperation", type);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<FinanceOperationAddResponse>();
         

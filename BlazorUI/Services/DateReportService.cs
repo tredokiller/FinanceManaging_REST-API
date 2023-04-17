@@ -1,3 +1,4 @@
+using BlazorUI.Services.Interfaces;
 using Infrastructure.Models;
 using Infrastructure.Services;
 using Newtonsoft.Json;
@@ -6,9 +7,9 @@ namespace BlazorUI.Services;
 
 public class DateReportService : IDateReportService
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientHandler _httpClient;
 
-    public DateReportService(HttpClient client)
+    public DateReportService(IHttpClientHandler client)
     {
         _httpClient = client ?? throw new ArgumentNullException(nameof(client));
     }

@@ -2,6 +2,8 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 using Blazored.LocalStorage;
+using BlazorUI.Services.Interfaces;
+using Infrastructure.Models.Exceptions;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorUI.Services;
@@ -9,9 +11,9 @@ namespace BlazorUI.Services;
 public class CustomAuthStateProvider : AuthenticationStateProvider
 {
     private readonly ILocalStorageService _localStorageService;
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientHandler _httpClient;
     
-    public CustomAuthStateProvider(ILocalStorageService localStorageService, HttpClient httpClient)
+    public CustomAuthStateProvider(ILocalStorageService localStorageService, IHttpClientHandler httpClient)
     {
         _localStorageService = localStorageService ?? throw new ArgumentNullException(nameof(localStorageService));
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
@@ -22,13 +24,12 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         string token = await  _localStorageService.GetItemAsStringAsync("token");
 
         var identity = new ClaimsIdentity();
-        _httpClient.DefaultRequestHeaders.Authorization = null;
+        _httpClient.SetAuthorization(null);
         
         if (!string.IsNullOrEmpty(token))
         {
             identity = new ClaimsIdentity(ParseClaimsFromJwt(token) , "jwt");
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
+            _httpClient.SetAuthorization(new AuthenticationHeaderValue("Bearer", token.Replace("\"", "")));
 
         }
         
@@ -42,10 +43,18 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
 
 
-    public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+    private static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
-        var payload = jwt.Split('.')[1];
-        var jsonBytes = ParseBase64WithoutPadding(payload);
+        string payLoad = string.Empty;
+        try
+        {
+            payLoad = jwt.Split('.')[1];
+        }
+        catch
+        {
+            throw new InvalidJwtTokenException(nameof(jwt));
+        }
+        var jsonBytes = ParseBase64WithoutPadding(payLoad);
         var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
         return keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
     }

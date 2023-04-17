@@ -1,4 +1,5 @@
 using System.Net;
+using BlazorUI.Services.Interfaces;
 using Domain.Entities;
 using Infrastructure.Models.Requests;
 using Infrastructure.Models.Responses;
@@ -9,9 +10,9 @@ namespace BlazorUI.Services;
 
 public class IncomeExpensesService : IIncomeExpenseService
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientHandler _httpClient;
     
-    public IncomeExpensesService(HttpClient httpClient)
+    public IncomeExpensesService(IHttpClientHandler httpClient)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
     }
@@ -40,11 +41,8 @@ public class IncomeExpensesService : IIncomeExpenseService
     public async Task RemoveIncomeExpenseType(int id)
     {
         var response = await _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Delete, $"api/IncomeExpenses/RemoveIncomeExpenseType?id={id}"));
-
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new Exception($"Failed to delete income expense type with ID {id}. Error: {response.ReasonPhrase}");
-        }
+        
+        response.EnsureSuccessStatusCode();
     }
 
     public async Task<IncomeExpensesUpdateResponse> UpdateIncomeExpenseType(IncomeExpensesUpdateRequest type)

@@ -1,9 +1,11 @@
 using Blazored.LocalStorage;
 using BlazorUI.Services;
+using BlazorUI.Services.Interfaces;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using DateReportService = BlazorUI.Services.DateReportService;
 using FinanceOperationService = BlazorUI.Services.FinanceOperationService;
+using HttpClientHandler = BlazorUI.Services.HttpClientHandler;
 using UserService = BlazorUI.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,12 +16,13 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7116/")});
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["RestApiURI"]!)});
 
 builder.Services.AddScoped<IFinanceOperationService, FinanceOperationService>();
 builder.Services.AddScoped<IIncomeExpenseService, IncomeExpensesService>();
 builder.Services.AddScoped<IDateReportService, DateReportService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IHttpClientHandler, HttpClientHandler>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
