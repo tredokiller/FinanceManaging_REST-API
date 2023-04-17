@@ -11,7 +11,7 @@ namespace Domain.Tests;
 public class RepositoryTests
 {
     
-    private async Task<ApplicationDbContext> GetDbContext()
+    private Task<ApplicationDbContext> GetDbContext()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -19,7 +19,7 @@ public class RepositoryTests
         var dataBaseContext = new ApplicationDbContext(options);
         dataBaseContext.Database.EnsureCreated();
 
-        return dataBaseContext; 
+        return Task.FromResult(dataBaseContext); 
     }
     
     [TestMethod]
