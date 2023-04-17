@@ -30,7 +30,6 @@ builder.Services.AddScoped<IDateReportService, DateReportService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 
-
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -93,6 +92,14 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ApplicationDbContext>();    
+    context.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
