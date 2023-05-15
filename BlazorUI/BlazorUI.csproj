@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RazorCompileOnBuild>false</RazorCompileOnBuild>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <UseRazorSourceGenerator>false</UseRazorSourceGenerator>
     </PropertyGroup>
 
     <ItemGroup>
